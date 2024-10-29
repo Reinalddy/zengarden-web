@@ -31,7 +31,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9" style="margin-top: 20%;">
+            <div class="col-xl-10 col-lg-12 col-md-9" style="margin-top: 10%;">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
@@ -45,13 +45,13 @@
                                     <form class="user" id="form-register">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="ucp" aria-describedby="ucp"
-                                                placeholder="Enter ucp name">
+                                                id="name" aria-describedby="ucp"
+                                                placeholder="Enter username">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="pin" aria-describedby="pin"
-                                                placeholder="Enter pin">
+                                            <input type="email" class="form-control form-control-user"
+                                                id="email" aria-describedby="email"
+                                                placeholder="Enter email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
@@ -103,16 +103,16 @@
             // register
             $('#form-register').on('submit', function (e) {
                 e.preventDefault();
-                var ucp = $('#ucp').val();
-                var pin = $('#pin').val();
+                var name = $('#name').val();
+                var email = $('#email').val();
                 var password = $('#password').val();
 
                 $.ajax({
                     type: "POST",
                     url: "{{ url('/register') }}",
                     data: {
-                        ucp: ucp,
-                        pin: pin,
+                        name: name,
+                        email: email,
                         password: password
                     },
                     success: function (response) {

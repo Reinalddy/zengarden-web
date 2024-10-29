@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    {{-- csrf token --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>ZenGarden - Login</title>
 
@@ -29,7 +31,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9" style="margin-top: 20%;">
+            <div class="col-xl-10 col-lg-12 col-md-9" style="margin-top: 10%;">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
@@ -40,19 +42,20 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login To Your UCP</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" id="form-login">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                id="email" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address..." name="email">
+                                                
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="password" placeholder="Password" name="password">
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login
-                                        </a>
+                                        </button>
                                         <hr>
                                     </form>
                                     <hr>
@@ -83,6 +86,35 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+    <script>
+        // csrf token
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $("#form-login").on("submit", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('/login') }}",
+                    data: {
+                        email: $("#email").val(),
+                        password: $("#password").val()
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if(response.code == 200) {
+                            window.location.href = "{{ route('dashboard.member') }}";
+                        }
+                    }
+                });
+            })
+        });
+    </script>
 
 </body>
 
